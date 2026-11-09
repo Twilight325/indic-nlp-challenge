@@ -20,6 +20,18 @@ document.addEventListener('DOMContentLoaded', () => {
         themeIcon.className = theme === 'light' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
     }
 
+    // Smooth scrolling for navigation anchor links
+    document.querySelectorAll('.nav-center a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+
     // File Upload Handlers
     const dropzone = document.getElementById('dropzone');
     const fileInput = document.getElementById('file-input');
@@ -172,21 +184,29 @@ document.addEventListener('DOMContentLoaded', () => {
         authForm.reset();
     }
 
-    loginNavBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        openModal(true);
-    });
+    if (loginNavBtn) {
+        loginNavBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal(true);
+        });
+    }
 
-    signupNavBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        openModal(false);
-    });
+    if (signupNavBtn) {
+        signupNavBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal(false);
+        });
+    }
 
-    closeModalBtn.addEventListener('click', closeModal);
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', closeModal);
+    }
 
-    authModal.addEventListener('click', (e) => {
-        if (e.target === authModal) closeModal();
-    });
+    if (authModal) {
+        authModal.addEventListener('click', (e) => {
+            if (e.target === authModal) closeModal();
+        });
+    }
 
     function rebindSwitchListener() {
         const newSwitchBtn = document.getElementById('switch-mode-btn');
@@ -198,15 +218,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    authForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const actionType = isLoginMode ? "Logging in" : "Signing up";
-        authSubmitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Please wait...`;
-        
-        setTimeout(() => {
-            alert(`${actionType} successful!`);
-            authSubmitBtn.textContent = isLoginMode ? "Login" : "Sign up";
-            closeModal();
-        }, 1000);
-    });
+    if (authForm) {
+        authForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const actionType = isLoginMode ? "Logging in" : "Signing up";
+            authSubmitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Please wait...`;
+            
+            setTimeout(() => {
+                alert(`${actionType} successful!`);
+                authSubmitBtn.textContent = isLoginMode ? "Login" : "Sign up";
+                closeModal();
+            }, 1000);
+        });
+    }
 });
