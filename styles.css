@@ -1,25 +1,36 @@
 :root {
-    --bg-color: #f8fafc;
-    --card-bg: #ffffff;
-    --text-primary: #0f172a;
+    /* LIGHT MODE: Glassmorphic variables */
+    --bg-color: #f0f4f8;
+    --card-bg: rgba(255, 255, 255, 0.65);
+    --card-border: rgba(255, 255, 255, 0.8);
+    --card-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+    --backdrop-blur: blur(16px);
+    
+    --text-primary: #1e293b;
     --text-secondary: #64748b;
-    --border-color: #e2e8f0;
+    --border-color: rgba(226, 232, 240, 0.8);
     --accent-color: #2563eb;
     --accent-hover: #1d4ed8;
-    --accent-light: #eff6ff;
-    --radius: 12px;
-    --transition: all 0.2s ease;
+    --accent-light: rgba(37, 99, 235, 0.08);
+    
+    --radius: 16px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 [data-theme="dark"] {
-    --bg-color: #0f172a;
-    --card-bg: #1e293b;
+    /* DARK MODE: Liquid morphism variables */
+    --bg-color: #030712;
+    --card-bg: rgba(17, 24, 39, 0.45);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --card-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
+    --backdrop-blur: blur(24px);
+    
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
-    --border-color: #334155;
+    --border-color: rgba(255, 255, 255, 0.08);
     --accent-color: #3b82f6;
     --accent-hover: #60a5fa;
-    --accent-light: #1e3a8a;
+    --accent-light: rgba(59, 130, 246, 0.15);
 }
 
 * {
@@ -35,16 +46,96 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    transition: var(--transition);
+    position: relative;
+    overflow-x: hidden;
+    transition: background-color 0.4s ease;
 }
 
-/* Navbar */
+/* Liquid / Glass Morphic Ambient Glow Orbs behind content */
+.ambient-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.5;
+    transition: all 0.6s ease;
+}
+
+[data-theme="light"] .blob-1 {
+    top: -10%;
+    left: 10%;
+    width: 500px;
+    height: 500px;
+    background: rgba(147, 197, 253, 0.4);
+}
+
+[data-theme="light"] .blob-2 {
+    bottom: 10%;
+    right: 5%;
+    width: 600px;
+    height: 600px;
+    background: rgba(199, 210, 254, 0.4);
+}
+
+[data-theme="light"] .blob-3 {
+    top: 40%;
+    left: 30%;
+    width: 400px;
+    height: 400px;
+    background: rgba(254, 202, 202, 0.3);
+}
+
+[data-theme="dark"] .blob-1 {
+    top: -10%;
+    left: 15%;
+    width: 550px;
+    height: 550px;
+    background: rgba(30, 58, 138, 0.45);
+    animation: floatBlob 12s infinite alternate ease-in-out;
+}
+
+[data-theme="dark"] .blob-2 {
+    bottom: 5%;
+    right: 10%;
+    width: 650px;
+    height: 650px;
+    background: rgba(76, 29, 149, 0.35);
+    animation: floatBlob 15s infinite alternate-reverse ease-in-out;
+}
+
+[data-theme="dark"] .blob-3 {
+    top: 45%;
+    left: 25%;
+    width: 450px;
+    height: 450px;
+    background: rgba(15, 118, 110, 0.25);
+}
+
+@keyframes floatBlob {
+    0% { transform: translate(0px, 0px) scale(1); }
+    100% { transform: translate(40px, 50px) scale(1.1); }
+}
+
+/* Navbar with Glass/Liquid Morphism */
 .navbar {
-    background-color: var(--card-bg);
+    background: var(--card-bg);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
     border-bottom: 1px solid var(--border-color);
     position: sticky;
     top: 0;
     z-index: 100;
+    box-shadow: var(--card-shadow);
 }
 
 .nav-container {
@@ -98,7 +189,7 @@ body {
 /* Buttons */
 .btn {
     padding: 0.5rem 1rem;
-    border-radius: 8px;
+    border-radius: 10px;
     font-weight: 500;
     font-size: 0.9rem;
     cursor: pointer;
@@ -107,50 +198,57 @@ body {
 }
 
 .btn-primary {
-    background-color: var(--accent-color);
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
     color: white;
     border: none;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
 }
 
 .btn-primary:hover:not(:disabled) {
-    background-color: var(--accent-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
 }
 
 .btn-primary:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
+    box-shadow: none;
 }
 
 .btn-secondary {
-    background-color: transparent;
+    background: var(--card-bg);
     color: var(--text-primary);
     border: 1px solid var(--border-color);
+    backdrop-filter: blur(8px);
 }
 
 .btn-secondary:hover {
-    background-color: var(--border-color);
+    background: var(--accent-light);
+    border-color: var(--accent-color);
 }
 
 .icon-btn, .action-icon-btn {
-    background: transparent;
+    background: var(--card-bg);
     border: 1px solid var(--border-color);
     color: var(--text-primary);
     width: 38px;
     height: 38px;
-    border-radius: 8px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    backdrop-filter: blur(8px);
     transition: var(--transition);
 }
 
 .icon-btn:hover, .action-icon-btn:hover:not(:disabled) {
-    background-color: var(--border-color);
+    background: var(--accent-light);
+    border-color: var(--accent-color);
 }
 
 .action-icon-btn:disabled {
-    opacity: 0.4;
+    opacity: 0.3;
     cursor: not-allowed;
 }
 
@@ -170,9 +268,10 @@ body {
 }
 
 .workspace-header h1 {
-    font-size: 1.75rem;
+    font-size: 2rem;
     font-weight: 700;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.35rem;
+    letter-spacing: -0.5px;
 }
 
 .workspace-header p {
@@ -184,7 +283,6 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
-    flex: 1;
 }
 
 @media(max-width: 900px) {
@@ -193,14 +291,23 @@ body {
     }
 }
 
+/* Glass & Liquid Morphic Panels */
 .panel {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border: 1px solid var(--card-border);
     border-radius: var(--radius);
-    padding: 1.5rem;
+    padding: 1.75rem;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
+    box-shadow: var(--card-shadow);
+    transition: var(--transition);
+}
+
+.panel:hover {
+    border-color: rgba(59, 130, 246, 0.3);
 }
 
 .panel-title {
@@ -222,20 +329,20 @@ body {
 .dropzone {
     border: 2px dashed var(--border-color);
     border-radius: var(--radius);
-    padding: 2rem;
+    padding: 2.5rem 2rem;
     text-align: center;
     cursor: pointer;
     transition: var(--transition);
-    background-color: var(--bg-color);
+    background: rgba(255, 255, 255, 0.02);
 }
 
 .dropzone:hover, .dropzone.dragover {
     border-color: var(--accent-color);
-    background-color: var(--accent-light);
+    background: var(--accent-light);
 }
 
 .dropzone i {
-    font-size: 2rem;
+    font-size: 2.25rem;
     color: var(--accent-color);
     margin-bottom: 0.75rem;
 }
@@ -247,7 +354,7 @@ body {
 
 .browse-link {
     color: var(--accent-color);
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .file-formats {
@@ -262,9 +369,10 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 0.75rem 1rem;
-    background-color: var(--bg-color);
+    background: var(--card-bg);
     border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border-radius: 10px;
+    backdrop-filter: blur(8px);
 }
 
 .file-info span {
@@ -294,19 +402,20 @@ body {
 
 .form-group select {
     padding: 0.75rem;
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid var(--border-color);
-    background-color: var(--card-bg);
+    background: var(--card-bg);
     color: var(--text-primary);
     font-size: 0.95rem;
     font-family: 'Times New Roman', Times, serif;
     outline: none;
     cursor: pointer;
+    backdrop-filter: blur(8px);
 }
 
 .btn-block {
     width: 100%;
-    padding: 0.75rem;
+    padding: 0.85rem;
     margin-top: auto;
 }
 
@@ -314,7 +423,7 @@ body {
 .tabs-header {
     display: flex;
     border-bottom: 1px solid var(--border-color);
-    gap: 1rem;
+    gap: 1.25rem;
 }
 
 .tab-btn {
@@ -322,7 +431,7 @@ body {
     border: none;
     padding: 0.5rem 0.25rem;
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: var(--text-secondary);
     cursor: pointer;
     position: relative;
@@ -331,6 +440,7 @@ body {
 
 .tab-btn.active {
     color: var(--accent-color);
+    font-weight: 600;
 }
 
 .tab-btn.active::after {
@@ -341,6 +451,7 @@ body {
     right: 0;
     height: 2px;
     background-color: var(--accent-color);
+    border-radius: 2px;
 }
 
 .tabs-content {
@@ -365,14 +476,102 @@ body {
     min-height: 280px;
     padding: 1rem;
     border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background-color: var(--bg-color);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.03);
     color: var(--text-primary);
     font-family: 'Times New Roman', Times, serif;
     font-size: 1.1rem;
     resize: none;
     outline: none;
     line-height: 1.6;
+    backdrop-filter: blur(8px);
+}
+
+/* Informational Sections */
+.info-section {
+    margin-top: 2.5rem;
+    scroll-margin-top: 5rem;
+}
+
+.info-container {
+    background: var(--card-bg);
+    backdrop-filter: var(--backdrop-blur);
+    -webkit-backdrop-filter: var(--backdrop-blur);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    box-shadow: var(--card-shadow);
+}
+
+.info-section h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.info-section p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+/* How it works grid */
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+@media(max-width: 768px) {
+    .steps-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.step-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    border-radius: 12px;
+    backdrop-filter: blur(8px);
+    transition: var(--transition);
+}
+
+.step-card:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.step-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent-color);
+}
+
+.step-card p {
+    font-size: 0.9rem;
+}
+
+/* FAQs list */
+.faq-item {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.faq-item:first-of-type {
+    margin-top: 1rem;
+    padding-top: 0;
+    border-top: none;
+}
+
+.faq-item h4 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+    color: var(--text-primary);
 }
 
 /* Authentication Modal Styles */
@@ -382,34 +581,34 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(12px);
 }
 
 .modal-content {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid var(--card-border);
     border-radius: var(--radius);
-    padding: 2rem;
+    padding: 2.5rem;
     width: 100%;
-    max-width: 400px;
+    max-width: 420px;
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
 }
 
 .modal-content #close-modal {
     position: absolute;
     top: 1.25rem;
     right: 1.25rem;
-    border: none;
-    background: transparent;
 }
 
 .modal-header h2 {
@@ -425,13 +624,14 @@ body {
 
 .modal-content .form-group input {
     padding: 0.75rem;
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid var(--border-color);
-    background-color: var(--bg-color);
+    background: rgba(255, 255, 255, 0.03);
     color: var(--text-primary);
     font-size: 0.95rem;
     outline: none;
     font-family: inherit;
+    backdrop-filter: blur(8px);
 }
 
 .modal-switch {
@@ -443,7 +643,7 @@ body {
 .modal-switch a {
     color: var(--accent-color);
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .modal-switch a:hover {
